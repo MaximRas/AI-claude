@@ -1,6 +1,6 @@
-# metapix-api-tests
+# Полносотью сгенерированный на claude фреймворк автотестов вместе с тестами на основе openapi.json спецификации, skills.md и инстуркций
 
-Фреймворк и автотесты API для микросервисов metapix + AI-агент (Claude Code), который по diff MR
+Фреймворк и автотесты API для микросервисов  + AI-агент (Claude Code), который по diff MR
 определяет, что проверять, и пишет тесты на новые/изменённые эндпоинты.
 
 **Стек:** Python 3.10+, requests, pytest (+xdist), pydantic v2, jsonschema (контракт по OpenAPI), Allure.
