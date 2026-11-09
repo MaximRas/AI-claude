@@ -1,0 +1,71 @@
+# Эндпоинты, которые осознанно НЕ покрываются автотестами на общем стенде.
+# Формат: <service>: [ {endpoint: "METHOD /path/из/спеки", reason: "..."} ]
+# Агент не пишет тесты на эти эндпоинты без явного запроса.
+
+auth-manager:
+  - endpoint: "POST /public/auth/forgot-password"
+    reason: отправляет письма реальным пользователям
+  - endpoint: "POST /public/auth/confirm-forgot-password"
+    reason: требует код из письма
+  - endpoint: "POST /public/auth/change-password"
+    reason: меняет пароль тестового пользователя (ломает параллельные прогоны)
+  - endpoint: "POST /public/auth/resend-confirmation-email"
+    reason: отправляет письма
+  - endpoint: "POST /public/v2/register"
+    reason: создаёт неудаляемых пользователей
+  - endpoint: "DELETE /public/v1/users/data"
+    reason: удаляет данные тестового пользователя
+  - endpoint: "POST /public/v1/users/state"
+    reason: перезаписывает весь state пользователя (v1); покрыт v2
+  - endpoint: "DELETE /public/v2/company/{company_id}/users/{user_id}"
+    reason: удаляет пользователей
+  - endpoint: "POST /public/v3/users"
+    reason: создаёт пользователей (нет удаления в тестовом контуре)
+  - endpoint: "POST /public/v3/company"
+    reason: создаёт компании
+  - endpoint: "DELETE /public/v1/user/companies/{company_id}"
+    reason: удаление компании
+  - endpoint: "PATCH /public/v1/user/companies/{company_id}/restore"
+    reason: парный к удалению компании
+  - endpoint: "PATCH /public/company/{company_id}"
+    reason: меняет общие данные компании
+  - endpoint: "PATCH /public/company/{company_id}/users/{user_id}"
+    reason: меняет роли пользователей компании
+  - endpoint: "POST /public/v1/integration/activate"
+    reason: активация интеграции (NX)
+  - endpoint: "POST /public/v1/integration/token"
+    reason: интеграция NX
+  - endpoint: "POST /public/v1/integration/check"
+    reason: интеграция NX
+  - endpoint: "POST /public/v1/auth/{scope}"
+    reason: SSO NX/DW
+  - endpoint: "POST /public/v2/auth/external"
+    reason: SSO NX/DW
+  - endpoint: "POST /public/v1/gateway_token"
+    reason: выпускает долгоживущие токены
+  - endpoint: "DELETE /public/v1/gateway_token/{token_id}"
+    reason: парный к выпуску токена
+  - endpoint: "PATCH /public/licenses/{license_id}"
+    reason: лицензии
+  - endpoint: "GET /public/demo-licenses"
+    reason: выдаёт демо-лицензию
+  - endpoint: "POST /public/v2/licenses/activate"
+    reason: лицензии
+  - endpoint: "POST /public/v1/licenses/batch"
+    reason: лицензии (license-server API)
+  - endpoint: "POST /public/v1/licenses/{license_id}/activate"
+    reason: лицензии
+  - endpoint: "PATCH /public/v1/licenses/{license_id}"
+    reason: лицензии
+  - endpoint: "POST /public/v1/licenses/{license_id}/extend"
+    reason: лицензии
+  - endpoint: "POST /public/user-photo"
+    reason: загрузка в S3, покрыть отдельно
+  - endpoint: "DELETE /public/user-photo"
+    reason: парный к загрузке фото
+  - endpoint: "GET /private/context/acquire/{access_token}"
+    reason: private API, недоступен через gateway
+
+object-manager:
+  - endpoint: "DELETE /device-manager/private/companies/{company_id}"
+    reason: удаляет все данные компании

@@ -1,0 +1,2971 @@
+{
+  "components": {
+    "schemas": {
+      "AccessEntrySchema": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "format": "uuid",
+            "title": "Created By",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AccessRoles"
+          },
+          "scope": {
+            "enum": [
+              "company",
+              "user"
+            ],
+            "title": "Scope",
+            "type": "string"
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "role",
+          "created_by",
+          "created_at"
+        ],
+        "title": "AccessEntrySchema",
+        "type": "object"
+      },
+      "AccessGrantCreate": {
+        "properties": {
+          "role": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccessRoles"
+              }
+            ],
+            "description": "viewer/editor"
+          },
+          "scope": {
+            "description": "'company' or 'user'",
+            "enum": [
+              "company",
+              "user"
+            ],
+            "title": "Scope",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "required if scope='user'",
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope",
+          "role"
+        ],
+        "title": "AccessGrantCreate",
+        "type": "object"
+      },
+      "AccessGrantPatch": {
+        "properties": {
+          "role": {
+            "$ref": "#/components/schemas/AccessRoles"
+          }
+        },
+        "required": [
+          "role"
+        ],
+        "title": "AccessGrantPatch",
+        "type": "object"
+      },
+      "AccessRoles": {
+        "description": "An enumeration.",
+        "enum": [
+          "viewer",
+          "editor",
+          "owner"
+        ],
+        "title": "AccessRoles"
+      },
+      "BasePaginatedResponse": {
+        "properties": {
+          "amount": {
+            "title": "Amount",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "size": {
+            "title": "Size",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "offset",
+          "size",
+          "amount"
+        ],
+        "title": "BasePaginatedResponse",
+        "type": "object"
+      },
+      "Body_v4_get_layouts_list_public_v4_layouts_list_post": {
+        "properties": {
+          "filters": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LayoutsListFilters"
+              }
+            ],
+            "default": {
+              "scope": "all"
+            },
+            "title": "Filters"
+          },
+          "pagination": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationParams"
+              }
+            ],
+            "default": {
+              "pgoffset": 0,
+              "pgsize": 10
+            },
+            "title": "Pagination"
+          }
+        },
+        "title": "Body_v4_get_layouts_list_public_v4_layouts_list_post",
+        "type": "object"
+      },
+      "Body_v4_get_widgets_list_public_v4_widgets_list_post": {
+        "properties": {
+          "filters": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WidgetsListFilters"
+              }
+            ],
+            "default": {
+              "scope": "all"
+            },
+            "title": "Filters"
+          },
+          "pagination": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationParams"
+              }
+            ],
+            "default": {
+              "pgoffset": 0,
+              "pgsize": 10
+            },
+            "title": "Pagination"
+          }
+        },
+        "title": "Body_v4_get_widgets_list_public_v4_widgets_list_post",
+        "type": "object"
+      },
+      "Body_v4_modify_layouts_list_public_v4_layouts_patch": {
+        "properties": {
+          "layouts": {
+            "items": {
+              "$ref": "#/components/schemas/v4_ModifyLayoutBatchItem"
+            },
+            "title": "Layouts",
+            "type": "array"
+          }
+        },
+        "required": [
+          "layouts"
+        ],
+        "title": "Body_v4_modify_layouts_list_public_v4_layouts_patch",
+        "type": "object"
+      },
+      "DetailingOut": {
+        "properties": {
+          "default": {
+            "title": "Default",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "value",
+          "default"
+        ],
+        "title": "DetailingOut",
+        "type": "object"
+      },
+      "ExtendedGrid": {
+        "properties": {
+          "h": {
+            "title": "H",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "w": {
+            "title": "W",
+            "type": "integer"
+          },
+          "x": {
+            "title": "X",
+            "type": "integer"
+          },
+          "y": {
+            "title": "Y",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "w",
+          "h",
+          "x",
+          "y",
+          "id"
+        ],
+        "title": "ExtendedGrid",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "LayoutCopySchema": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ordering": {
+            "default": 0,
+            "title": "Ordering",
+            "type": "integer"
+          },
+          "state": {
+            "default": {},
+            "title": "State",
+            "type": "object"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "LayoutCopySchema",
+        "type": "object"
+      },
+      "LayoutCreateSchema": {
+        "properties": {
+          "grid": {
+            "items": {
+              "$ref": "#/components/schemas/ExtendedGrid"
+            },
+            "title": "Grid",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ordering": {
+            "default": 0,
+            "title": "Ordering",
+            "type": "integer"
+          },
+          "state": {
+            "default": {},
+            "title": "State",
+            "type": "object"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "LayoutCreateSchema",
+        "type": "object"
+      },
+      "LayoutCreated": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "LayoutCreated",
+        "type": "object"
+      },
+      "LayoutItemSchema": {
+        "properties": {
+          "access_role": {
+            "$ref": "#/components/schemas/AccessRoles"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "grid": {
+            "items": {
+              "$ref": "#/components/schemas/ExtendedGrid"
+            },
+            "title": "Grid",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_shared": {
+            "title": "Is Shared",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ordering": {
+            "title": "Ordering",
+            "type": "integer"
+          },
+          "state": {
+            "default": {},
+            "title": "State",
+            "type": "object"
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "grid",
+          "user_id",
+          "created_at",
+          "access_role",
+          "is_shared"
+        ],
+        "title": "LayoutItemSchema",
+        "type": "object"
+      },
+      "LayoutsListFilters": {
+        "properties": {
+          "role": {
+            "description": "Optional multiple role filter",
+            "items": {
+              "enum": [
+                "owner",
+                "editor",
+                "viewer"
+              ],
+              "type": "string"
+            },
+            "title": "Role",
+            "type": "array"
+          },
+          "scope": {
+            "default": "all",
+            "description": "my — current user's widgets, shared — widgets shared with current user, all - both",
+            "enum": [
+              "all",
+              "my",
+              "shared"
+            ],
+            "title": "Scope",
+            "type": "string"
+          }
+        },
+        "title": "LayoutsListFilters",
+        "type": "object"
+      },
+      "PaginatedResponse_LayoutItemSchema_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LayoutItemSchema"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/BasePaginatedResponse"
+          }
+        },
+        "required": [
+          "pagination",
+          "items"
+        ],
+        "title": "PaginatedResponse[LayoutItemSchema]",
+        "type": "object"
+      },
+      "PaginatedResponse_WidgetItemSchema_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/WidgetItemSchema"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/BasePaginatedResponse"
+          }
+        },
+        "required": [
+          "pagination",
+          "items"
+        ],
+        "title": "PaginatedResponse[WidgetItemSchema]",
+        "type": "object"
+      },
+      "PaginationParams": {
+        "properties": {
+          "pgoffset": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Offset",
+            "type": "integer"
+          },
+          "pgsize": {
+            "default": 10,
+            "example": 10,
+            "gte": -1,
+            "title": "How many rows to return. If set to -1 all rows will return",
+            "type": "integer"
+          }
+        },
+        "title": "PaginationParams",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "VersionSchema": {
+        "properties": {
+          "assembly_date": {
+            "format": "date-time",
+            "title": "Assembly Date",
+            "type": "string"
+          },
+          "author": {
+            "title": "Author",
+            "type": "string"
+          },
+          "branch": {
+            "title": "Branch",
+            "type": "string"
+          },
+          "commit": {
+            "title": "Commit",
+            "type": "string"
+          },
+          "tag": {
+            "title": "Tag",
+            "type": "string"
+          },
+          "trigger": {
+            "title": "Trigger",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tag",
+          "branch",
+          "commit",
+          "assembly_date",
+          "author",
+          "trigger"
+        ],
+        "title": "VersionSchema",
+        "type": "object"
+      },
+      "WidgetCopySchema": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "state": {
+            "title": "State",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "title": "WidgetCopySchema",
+        "type": "object"
+      },
+      "WidgetCreate": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "state": {
+            "default": {},
+            "title": "State",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "name"
+        ],
+        "title": "WidgetCreate",
+        "type": "object"
+      },
+      "WidgetCreated": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "WidgetCreated",
+        "type": "object"
+      },
+      "WidgetEditSchema": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "state": {
+            "title": "State",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "title": "WidgetEditSchema",
+        "type": "object"
+      },
+      "WidgetItemSchema": {
+        "properties": {
+          "access_role": {
+            "$ref": "#/components/schemas/AccessRoles"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_shared": {
+            "title": "Is Shared",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "parent_layout_id": {
+            "format": "uuid",
+            "title": "Parent Layout Id",
+            "type": "string"
+          },
+          "state": {
+            "default": {},
+            "title": "State",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "user_id",
+          "created_at",
+          "access_role",
+          "is_shared"
+        ],
+        "title": "WidgetItemSchema",
+        "type": "object"
+      },
+      "WidgetsListFilters": {
+        "properties": {
+          "embedded": {
+            "description": "True — widgets inside layouts only, False — orphan widgets only, None — both",
+            "title": "Embedded",
+            "type": "boolean"
+          },
+          "role": {
+            "description": "Optional multiple role filter",
+            "items": {
+              "enum": [
+                "owner",
+                "editor",
+                "viewer"
+              ],
+              "type": "string"
+            },
+            "title": "Role",
+            "type": "array"
+          },
+          "scope": {
+            "default": "all",
+            "description": "my — current user's widgets, shared — widgets shared with current user, all - both",
+            "enum": [
+              "all",
+              "my",
+              "shared"
+            ],
+            "title": "Scope",
+            "type": "string"
+          }
+        },
+        "title": "WidgetsListFilters",
+        "type": "object"
+      },
+      "v4_ModifyLayoutBatchItem": {
+        "properties": {
+          "grid": {
+            "items": {
+              "$ref": "#/components/schemas/ExtendedGrid"
+            },
+            "title": "Grid",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ordering": {
+            "title": "Ordering",
+            "type": "integer"
+          },
+          "state": {
+            "title": "State",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "v4_ModifyLayoutBatchItem",
+        "type": "object"
+      },
+      "v4_ModifyLayoutIn": {
+        "properties": {
+          "grid": {
+            "items": {
+              "$ref": "#/components/schemas/ExtendedGrid"
+            },
+            "title": "Grid",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ordering": {
+            "title": "Ordering",
+            "type": "integer"
+          },
+          "state": {
+            "title": "State",
+            "type": "object"
+          }
+        },
+        "title": "v4_ModifyLayoutIn",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/private/health": {
+      "get": {
+        "operationId": "v1_method_check_health_private_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response V1 Method Check Health Private Health Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "V1 Method Check Health",
+        "tags": [
+          "general v1"
+        ]
+      }
+    },
+    "/public/detailing": {
+      "get": {
+        "operationId": "v1_get_detailing_public_detailing_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "timestamp_start",
+            "required": true,
+            "schema": {
+              "title": "Timestamp Start",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "timestamp_end",
+            "required": true,
+            "schema": {
+              "title": "Timestamp End",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DetailingOut"
+                  },
+                  "title": "Response V1 Get Detailing Public Detailing Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Timestamp_start should not be bigger or equal timestamp_end",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Timestamp_start should not be bigger or equal timestamp_end"
+          }
+        },
+        "summary": "V1 Get Detailing",
+        "tags": [
+          "public v1"
+        ]
+      }
+    },
+    "/public/v4/layouts": {
+      "patch": {
+        "operationId": "v4_modify_layouts_list_public_v4_layouts_patch",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_v4_modify_layouts_list_public_v4_layouts_patch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Modify Layouts List",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "post": {
+        "operationId": "v4_create_layout_public_v4_layouts_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LayoutCreateSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LayoutCreated"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Layout/Widget does not exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Layout/Widget does not exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Create Layout",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/layouts/list": {
+      "post": {
+        "operationId": "v4_get_layouts_list_public_v4_layouts_list_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_v4_get_layouts_list_public_v4_layouts_list_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponse_LayoutItemSchema_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Get Layouts List",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/layouts/{layout_id}": {
+      "delete": {
+        "operationId": "v4_delete_layout_public_v4_layouts__layout_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Layout/Widget does not exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Layout/Widget does not exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Delete Layout",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "get": {
+        "operationId": "v4_get_layout_public_v4_layouts__layout_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LayoutItemSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Layout/Widget does not exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Layout/Widget does not exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Get Layout",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "patch": {
+        "operationId": "v4_modify_layout_public_v4_layouts__layout_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v4_ModifyLayoutIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Layout/Widget does not exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Layout/Widget does not exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Modify Layout",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/layouts/{layout_id}/access": {
+      "delete": {
+        "operationId": "v4_purge_layout_access_public_v4_layouts__layout_id__access_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Bulk delete mode: all|company|user",
+            "in": "query",
+            "name": "mode",
+            "required": false,
+            "schema": {
+              "default": "all",
+              "description": "Bulk delete mode: all|company|user",
+              "enum": [
+                "all",
+                "company",
+                "user"
+              ],
+              "title": "Mode",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Purge Layout Access",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "get": {
+        "operationId": "v4_list_layout_access_public_v4_layouts__layout_id__access_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AccessEntrySchema"
+                  },
+                  "title": "Response V4 List Layout Access Public V4 Layouts  Layout Id  Access Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 List Layout Access",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "post": {
+        "operationId": "v4_create_layout_access_public_v4_layouts__layout_id__access_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccessGrantCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessEntrySchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Create Layout Access",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/layouts/{layout_id}/access/{entry_id}": {
+      "delete": {
+        "operationId": "v4_delete_layout_access_entry_public_v4_layouts__layout_id__access__entry_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entry_id",
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Delete Layout Access Entry",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "patch": {
+        "operationId": "v4_patch_layout_access_public_v4_layouts__layout_id__access__entry_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entry_id",
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccessGrantPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessEntrySchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Patch Layout Access",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/layouts/{layout_id}/copy": {
+      "post": {
+        "operationId": "v4_copy_layout_public_v4_layouts__layout_id__copy_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LayoutCopySchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LayoutCreated"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Layout/Widget does not exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Layout/Widget does not exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Copy Layout",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/layouts/{layout_id}/widgets": {
+      "get": {
+        "operationId": "v4_get_widgets_by_layout_id_public_v4_layouts__layout_id__widgets_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "layout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Layout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/WidgetItemSchema"
+                  },
+                  "title": "Response V4 Get Widgets By Layout Id Public V4 Layouts  Layout Id  Widgets Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Layout/Widget does not exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Layout/Widget does not exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Get Widgets By Layout Id",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/widgets": {
+      "post": {
+        "operationId": "v4_create_widget_public_v4_widgets_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WidgetCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WidgetCreated"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Create Widget",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/widgets/list": {
+      "post": {
+        "operationId": "v4_get_widgets_list_public_v4_widgets_list_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_v4_get_widgets_list_public_v4_widgets_list_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponse_WidgetItemSchema_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Get Widgets List",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/widgets/{widget_id}": {
+      "delete": {
+        "operationId": "v4_delete_widget_public_v4_widgets__widget_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Widget widget_id doesn't exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Widget widget_id doesn't exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Delete Widget",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "get": {
+        "operationId": "v4_get_widget_public_v4_widgets__widget_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WidgetItemSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Layout/Widget does not exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Layout/Widget does not exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Get Widget",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "patch": {
+        "operationId": "v4_patch_widget_public_v4_widgets__widget_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WidgetEditSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WidgetCreated"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Widget widget_id doesn't exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Widget widget_id doesn't exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Patch Widget",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/widgets/{widget_id}/access": {
+      "delete": {
+        "operationId": "v4_purge_widget_access_public_v4_widgets__widget_id__access_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Bulk delete mode: all|company|user",
+            "in": "query",
+            "name": "mode",
+            "required": false,
+            "schema": {
+              "default": "all",
+              "description": "Bulk delete mode: all|company|user",
+              "enum": [
+                "all",
+                "company",
+                "user"
+              ],
+              "title": "Mode",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Purge Widget Access",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "get": {
+        "operationId": "v4_list_widget_access_public_v4_widgets__widget_id__access_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AccessEntrySchema"
+                  },
+                  "title": "Response V4 List Widget Access Public V4 Widgets  Widget Id  Access Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 List Widget Access",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "post": {
+        "operationId": "v4_create_widget_access_public_v4_widgets__widget_id__access_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccessGrantCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessEntrySchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Create Widget Access",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/widgets/{widget_id}/access/{entry_id}": {
+      "delete": {
+        "operationId": "v4_delete_widget_access_entry_public_v4_widgets__widget_id__access__entry_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entry_id",
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Delete Widget Access Entry",
+        "tags": [
+          "public v4"
+        ]
+      },
+      "patch": {
+        "operationId": "v4_patch_widget_access_public_v4_widgets__widget_id__access__entry_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entry_id",
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccessGrantPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessEntrySchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Patch Widget Access",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/v4/widgets/{widget_id}/copy": {
+      "post": {
+        "operationId": "v4_copy_widget_public_v4_widgets__widget_id__copy_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Widget Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "access-token",
+            "required": false,
+            "schema": {
+              "title": "Access-Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WidgetCopySchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WidgetCreated"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Token is expired",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Expired Token | Invalid or Empty token"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 404,
+                  "message": "Widget widget_id doesn't exist",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Widget widget_id doesn't exist"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Backend error. Auth-manager unavailable",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Backend error. Auth-manager unavailable"
+          }
+        },
+        "summary": "V4 Copy Widget",
+        "tags": [
+          "public v4"
+        ]
+      }
+    },
+    "/public/version": {
+      "get": {
+        "description": "Get service version",
+        "operationId": "v1_method_get_version_info_public_version_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "assembly_date": "2022-05-30T15:06:17+00:00",
+                  "author": "Metapix Developer <user@metapix.ai>",
+                  "branch": "dev",
+                  "commit": "12da1d76aa91fc0dbb848c3ef28bd2017d04af87",
+                  "tag": "",
+                  "trigger": "push"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/VersionSchema"
+                }
+              }
+            },
+            "description": "Successfully got version info"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Version info file does not exists",
+                  "status": "error"
+                }
+              }
+            },
+            "description": "Version info file does not exists"
+          }
+        },
+        "summary": "V1 Method Get Version Info",
+        "tags": [
+          "public v1"
+        ]
+      }
+    }
+  }
+}

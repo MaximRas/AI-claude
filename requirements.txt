@@ -1,0 +1,12 @@
+requests>=2.32
+pytest>=8.0
+pytest-xdist>=3.5
+pydantic>=2.6
+pydantic-settings>=2.7
+python-dotenv>=1.0
+jsonschema>=4.21
+allure-pytest>=2.13
+PyYAML>=6.0
+# dev
+responses>=0.25
+ruff>=0.5

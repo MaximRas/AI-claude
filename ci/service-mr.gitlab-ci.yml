@@ -1,0 +1,60 @@
+# Шаблон для репозиториев СЕРВИСОВ (object-manager, auth-manager, layout-manager, ...).
+# Сервис ничего не знает про Claude и не хранит его ключи: он лишь триггерит пайплайн
+# в репозитории автотестов (multi-project pipeline), где живут агент, образ и все секреты.
+#
+# Подключение в .gitlab-ci.yml сервиса:
+#
+#   include:
+#     - project: "metapix-cloud/qa/metapix-api-tests"     # путь к репо автотестов
+#       ref: master
+#       file: "/ci/service-mr.gitlab-ci.yml"
+#
+#   variables:
+#     API_TESTS_SERVICE: "object-manager"                   # имя спеки specs/<name>.json
+#
+# Требования: у пользователя, запускающего pipeline сервиса, — роль Developer+ в репо автотестов
+# (право запускать downstream pipeline). Стадии `test` и `deploy` должны существовать в сервисе
+# (или переопределите `stage:` у джоб ниже).
+
+variables:
+  API_TESTS_PROJECT: "metapix-cloud/qa/metapix-api-tests"
+  API_TESTS_REF: "master"
+  API_TESTS_SERVICE: ""
+  API_TESTS_ENV: "alphatest1"
+  API_TESTS_DEPLOY_BRANCH: "dev"          # ветка, деплой которой на стенд запускает smoke
+
+# 1) На каждый MR: агент разбирает diff, комментирует MR и (если нужно) открывает MR с тестами.
+#    Не блокирует MR сервиса.
+api-tests:mr-agent:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_DRAFT != "true"
+  allow_failure: true
+  needs: []
+  variables:
+    AGENT_TASK: "mr-impact"
+    SERVICE_PROJECT_PATH: "$CI_PROJECT_PATH"
+    SERVICE_MR_IID: "$CI_MERGE_REQUEST_IID"
+    SERVICE_SOURCE_SHA: "$CI_COMMIT_SHA"
+    SERVICE_TARGET_BRANCH: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+    SERVICE_NAME: "$API_TESTS_SERVICE"
+    TEST_ENV: "$API_TESTS_ENV"
+  trigger:
+    project: "$API_TESTS_PROJECT"
+    branch: "$API_TESTS_REF"
+
+# 2) После деплоя ветки на стенд: smoke API-тестов. strategy: depend — статус smoke виден в пайплайне сервиса.
+#    Поставьте `needs:` на вашу deploy-джобу, если она есть.
+api-tests:smoke:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $API_TESTS_DEPLOY_BRANCH
+  allow_failure: true
+  variables:
+    TEST_ENV: "$API_TESTS_ENV"
+    TEST_MARK: "smoke"
+    AGENT_TASK: ""
+  trigger:
+    project: "$API_TESTS_PROJECT"
+    branch: "$API_TESTS_REF"
+    strategy: depend

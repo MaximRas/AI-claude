@@ -1,0 +1,138 @@
+# Окружения API-автотестов. Структура совпадает с config.yaml фронтовых автотестов.
+#
+# !!! В этом файле НЕТ секретов — он коммитится. Секреты задаются переменными окружения
+#     (GitLab CI/CD variables или локальный .env), имена указаны в комментариях `# env:`.
+#     Вложенные поля переопределяются через "__": COGNITO__SECRET_KEY, LICENSE_SERVER__API_URL ...
+#
+# Выбор окружения: TEST_ENV=<ключ верхнего уровня> (по умолчанию alphatest1).
+# Блок `api_tests` — параметры, специфичные для API-тестов (компания, маршрутизация, prod-защита).
+
+gitlab:
+  host: "https://gitlab.dev.metapixai.com/"
+  # private_token  -> env: GITLAB_API_TOKEN
+
+# _default_pwd -> env: TEST_USER_PASSWORD
+requests_timeout:   # (connect, read) секунд — передаётся в requests как кортеж
+  - 10
+  - 20
+
+mailinator: {}      # token -> env: MAILINATOR_TOKEN
+
+DWNX:
+  email: vbelyaev@metapix.ai
+  name: "Vyacheslav Belyaev"
+  # password -> env: DWNX__PASSWORD
+
+alphatest1: &dev_env
+  name: alphatest1
+  url: https://api.alphatest1.dev.metapixai.com
+  web_url: https://app.alphatest1.dev.metapixai.com
+  cognito:
+    region_name: "eu-central-1"
+    user_pool_id: "eu-central-1_aC5Szk1rB"
+    app_id: "6rgoapu5kusb85fb59mepqd759"
+    # access_key -> env: COGNITO__ACCESS_KEY ; secret_key -> env: COGNITO__SECRET_KEY
+  license_server:
+    web_url: https://app.dev.licensing.dev.metapixai.com/
+    api_url: https://api.dev.licensing.dev.metapixai.com
+    service_provider: autotest@metapix.ai
+    integrator: integrator3@metapixteam.testinator.com
+  service_provider:
+    company_name_cpo: Metapix CPO
+    company_name_euo: Metapix EUO
+    company_name_integrator: Integrator Test Company CPO
+    email: autotest@metapix.ai
+  api_tests:
+    routing: gateway
+    company_id: 10055          # «Maxim Rasulzoda» — изолированная компания тестового пользователя
+    production: false
+
+dev-dw:
+  <<: *dev_env
+  name: dev-dw
+  web_url: https://dev.dw.front.fbt.dev.metapixai.com
+  theme: dw
+
+dev-metapix:
+  <<: *dev_env
+  name: dev-metapix
+  web_url: https://dev.metapix.front.fbt.dev.metapixai.com
+  theme: nx
+
+mymetapix:
+  name: mymetapix
+  url: https://api.my.metapix.ai
+  web_url: https://my.metapix.ai
+  service_provider:
+    company_name_cpo: Metapix CPO
+    company_name_euo: Metapix EUO
+    company_name_integrator: Integrator Test Company
+    email: autotest@metapix.ai
+  theme: nx
+  api_tests:
+    routing: gateway
+    company_id: null           # TODO: изолированная тестовая компания на проде (env: TEST_COMPANY_ID)
+    production: true           # запуск только с ALLOW_PRODUCTION=true
+
+mydw:
+  name: mydw
+  url: https://api.mydw.metapix.ai
+  web_url: https://mydw.metapix.ai
+  service_provider:
+    company_name_euo: Digital Watchdog
+    company_name_cpo: Digital Watchdog CPO
+    company_name_integrator: Integrator Test Company
+    email: autotest@metapix.ai
+  theme: dw
+  api_tests:
+    routing: gateway
+    company_id: null
+    production: true
+
+staging: &staging_env
+  name: staging
+  url: https://api.staging.metapix.ai
+  web_url: https://app-dw.staging.metapix.ai/
+  cognito:
+    region_name: "us-east-1"
+    user_pool_id: "us-east-1_bezWqkafx"
+    app_id: "1aunkq5blbvovm99h596jp82pq"
+    # access_key -> env: COGNITO__ACCESS_KEY ; secret_key -> env: COGNITO__SECRET_KEY
+  service_provider:
+    company_name_cpo: Metapix CPO NEW
+    company_name_euo: Metapix EUO
+    company_name_integrator: Integrator Test Company CPO
+    email: autotest@metapix.ai
+  license_server:
+    web_url: https://app.licensing.staging.metapix.ai
+    api_url: https://api.licensing.staging.metapix.ai
+    service_provider: autotest@metapix.ai
+    integrator: integrator3@metapixteam.testinator.com
+  api_tests:
+    routing: gateway
+    company_id: 37581           # TODO: тестовая компания на staging (env: TEST_COMPANY_ID)
+    production: false
+
+staging-metapix:
+  <<: *staging_env
+  name: staging-metapix
+  web_url: https://app-metapix.staging.metapix.ai/
+
+# backend 2.0 (split-таблицы объектов) — копия базы MYDW, задача admin#596.
+# ВНИМАНИЕ: смотрит в ПРОД-юзерпул Cognito — нельзя создавать/регистрировать и полностью удалять пользователей.
+object-ng:
+  name: object-ng
+  url: https://api.object-ng.dev.metapixai.com
+  web_url: https://app.object-ng.dev.metapixai.com
+  theme: dw
+  service_provider:
+    company_name_euo: Digital Watchdog
+    company_name_cpo: Digital Watchdog CPO
+    company_name_integrator: Integrator Test Company
+    email: autotest@metapix.ai
+  api_tests:
+    routing: gateway
+    company_id: 3768           # «foractivate» (admin) — для тестов, создающих сущности
+    objects_company_id: 5      # «Digital Watchdog» (regular) — реальные объекты MYDW для get/patch/search
+    production: false
+    prod_user_pool: true       # тесты с маркером user_pool_mutation запрещены
